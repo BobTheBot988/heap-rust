@@ -107,16 +107,12 @@ impl<T: Num + Ord + Debug + Clone> Iterator for Heap<T> {
 }
 #[cfg(test)]
 mod tests {
-    use std::panic;
 
     // Import everything from the parent module (this file)
     use super::*;
     // You'd also import test-only crates here
     use ordered_float::OrderedFloat;
-    use rand::{
-        distr::{Distribution, Uniform},
-        rng,
-    };
+    use rand::distr::{Distribution, Uniform};
 
     #[test]
     fn test_heap_push() {
@@ -138,15 +134,12 @@ mod tests {
     fn test_float_heap() {
         let mut float_heap = Heap::<OrderedFloat<f64>>::new();
 
-        let rng = rand::rng();
-
         let between = Uniform::new(0.0, 1.0).unwrap();
 
-        let mut rng = rand::rng();
+        let mut _rng = rand::rng();
         for _ in 0..1000 {
-            float_heap.push(OrderedFloat(between.sample(&mut rng)));
+            float_heap.push(OrderedFloat(between.sample(&mut _rng)));
         }
         assert_eq!(float_heap.len(), 1000);
-        println!("{:?}", float_heap);
     }
 }
