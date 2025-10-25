@@ -1,10 +1,10 @@
 use num::Num;
-use std::{fmt::Debug, mem::swap};
+use std::fmt::Debug;
 
 // 1. Define the struct to be generic over a type `T`.
 //    A heap is a collection, so it usually holds a `Vec<T>`.
 #[derive(Debug)]
-struct Heap<T> {
+pub struct Heap<T> {
     data: Vec<T>,
 }
 
@@ -14,12 +14,12 @@ struct Heap<T> {
 //    - T: Num    -> Ensures T is a "number" from the `num` crate.
 //    - T: Ord    -> Ensures T can be ordered (critical for a heap).
 //    - T: Debug  -> Allows the struct to be printed (from your `derive`).
-impl<T: Num + Ord + Debug + Clone + Iterator> Heap<T> {
+impl<T: Num + Ord + Debug + Clone> Heap<T> {
     // Heap impl
-    fn new() -> Self {
+    pub fn new() -> Self {
         Heap { data: Vec::new() }
     }
-    fn sift_up(&mut self) {
+    pub fn sift_up(&mut self) {
         let mut i: usize = self.len() - 1;
 
         while i > 0 {
@@ -29,7 +29,7 @@ impl<T: Num + Ord + Debug + Clone + Iterator> Heap<T> {
             }
         }
     }
-    fn sift_down(&mut self) {
+    pub fn sift_down(&mut self) {
         let mut i: usize = 0;
         let mut left_i: usize;
         let mut right_i: usize;
@@ -51,21 +51,21 @@ impl<T: Num + Ord + Debug + Clone + Iterator> Heap<T> {
             }
         }
     }
-    fn peek(&mut self, i: usize) -> T {
+    pub fn peek(&mut self, i: usize) -> T {
         self.data[i].clone()
     }
     // Your methods (like `push`, `pop`) would go here.
     // They rely on `T` being `Ord` to sift elements up or down.
-    fn push(&mut self, value: T) {
+    pub fn push(&mut self, value: T) {
         self.data.push(value);
         self.sift_up();
     }
-    fn pop(&mut self, i: usize) -> T {
+    pub fn pop(&mut self, i: usize) -> T {
         let a = self.data.swap_remove(i);
         self.sift_down();
         a
     }
-    fn len(&mut self) -> usize {
+    pub fn len(&mut self) -> usize {
         self.data.len()
     }
 }
