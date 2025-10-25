@@ -1,13 +1,6 @@
-// File: tests/heap_test.rs
-
-// 1. REMOVE THIS LINE:
-// use "../src/heap.rs";
-
-// 2. ADD THIS LINE (using your crate name with an underscore):
 use heap_rust::heap::Heap;
 use heap_rust::heap::NewTrait;
 
-// 3. ALSO ADD your dev-dependencies
 use ordered_float::OrderedFloat;
 
 #[test]

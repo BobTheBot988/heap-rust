@@ -1,8 +1,6 @@
 use num::Num;
 use std::fmt::Debug;
 
-// 1. Define the struct to be generic over a type `T`.
-//    A heap is a collection, so it usually holds a `Vec<T>`.
 #[derive(Debug)]
 pub struct Heap<T> {
     data: Vec<T>,
@@ -26,11 +24,6 @@ where
 }
 
 // 2. Apply the constraints on the `impl` block where you define
-//    the heap's behavior.
-//
-//    - T: Num    -> Ensures T is a "number" from the `num` crate.
-//    - T: Ord    -> Ensures T can be ordered (critical for a heap).
-//    - T: Debug  -> Allows the struct to be printed (from your `derive`).
 impl<T> NewTrait<T> for Heap<T>
 where
     T: Num + Ord + Debug + Clone,
@@ -114,10 +107,16 @@ impl<T: Num + Ord + Debug + Clone> Iterator for Heap<T> {
 }
 #[cfg(test)]
 mod tests {
+    use std::panic;
+
     // Import everything from the parent module (this file)
     use super::*;
     // You'd also import test-only crates here
     use ordered_float::OrderedFloat;
+    use rand::{
+        distr::{Distribution, Uniform},
+        rng,
+    };
 
     #[test]
     fn test_heap_push() {
@@ -138,8 +137,16 @@ mod tests {
     #[test]
     fn test_float_heap() {
         let mut float_heap = Heap::<OrderedFloat<f64>>::new();
-        float_heap.push(OrderedFloat(1.1));
-        float_heap.push(OrderedFloat(9.9));
-        assert_eq!(float_heap.len(), 2);
+
+        let rng = rand::rng();
+
+        let between = Uniform::new(0.0, 1.0).unwrap();
+
+        let mut rng = rand::rng();
+        for _ in 0..1000 {
+            float_heap.push(OrderedFloat(between.sample(&mut rng)));
+        }
+        assert_eq!(float_heap.len(), 1000);
+        println!("{:?}", float_heap);
     }
 }
